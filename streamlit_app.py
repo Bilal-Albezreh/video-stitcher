@@ -1,45 +1,48 @@
 import streamlit as st
-
 import cv2
+import numpy as np
+import tempfile
 import os
 
-# Parameters
-VIDEO_PATH = 'input.mp4'  # Change this to your video file
-FRAME_INTERVAL = 30       # Extract one frame every 30 frames
-OUTPUT_IMAGE = 'panorama.jpg'
+st.title("Video Stitcher")
 
-# Create a directory to store extracted frames
-os.makedirs('frames', exist_ok=True)
+uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov"])
 
-# Extract frames from video
-cap = cv2.VideoCapture(VIDEO_PATH)
-frame_count = 0
-saved_frames = []
+FRAME_INTERVAL = 30  # extract one frame every 30 frames
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-    if frame_count % FRAME_INTERVAL == 0:
-        frame_path = f'frames/frame_{frame_count}.jpg'
-        cv2.imwrite(frame_path, frame)
-        saved_frames.append(frame_path)
-    frame_count += 1
-cap.release()
-
-# Load extracted frames
-images = [cv2.imread(f) for f in saved_frames]
-
-# Stitch images into a panorama
-stitcher = cv2.Stitcher_create()
-status, pano = stitcher.stitch(images)
-
-if status == cv2.Stitcher_OK:
-    cv2.imwrite(OUTPUT_IMAGE, pano)
-    print(f'Panorama saved as {OUTPUT_IMAGE}')
-else:
-    print('Error during stitching:', status) 
-
-st.title("Test App is Working 🎉")
-st.write("If you're seeing this, Streamlit + Framer is connected properly!")
-
+if uploaded_file:
+    # Save uploaded video to a temp file
+    tfile = tempfile.NamedTemporaryFile(delete=False)
+    tfile.write(uploaded_file.read())
+    tfile.close()
+    
+    cap = cv2.VideoCapture(tfile.name)
+    
+    frames = []
+    frame_count = 0
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        if frame_count % FRAME_INTERVAL == 0:
+            frames.append(frame)
+        frame_count += 1
+    
+    cap.release()
+    
+    if len(frames) < 2:
+        st.warning("Not enough frames extracted to stitch. Please upload a longer video.")
+    else:
+        stitcher = cv2.Stitcher_create()
+        status, pano = stitcher.stitch(frames)
+        
+        if status == cv2.Stitcher_OK:
+            # Convert BGR to RGB for displaying
+            pano_rgb = cv2.cvtColor(pano, cv2.COLOR_BGR2RGB)
+            st.image(pano_rgb, caption="Stitched Panorama")
+        else:
+            st.error(f"Error during stitching: {status}")
+    
+    # Clean up temp file
+    os.remove(tfile.name) 
