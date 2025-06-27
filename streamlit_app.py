@@ -95,10 +95,9 @@ if uploaded_file:
                     base = segment[0].copy()
                     h, w = base.shape[:2]
                     canvas = np.zeros_like(base, dtype=np.float32)
-                    weight = np.zeros((h, w), dtype=np.float32)
-                    # First frame
-                    canvas += base.astype(np.float32)
-                    weight += 1.0
+                    mask = np.zeros((h, w), dtype=np.float32)
+                    canvas[:,:,:] = base[:,:,:]
+                    mask[:,:] = 1.0
                     prev_gray = cv2.cvtColor(base, cv2.COLOR_BGR2GRAY)
                     for f in segment[1:]:
                         curr_gray = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
@@ -108,19 +107,11 @@ if uploaded_file:
                         map_x = w_idx + flow[:,:,0]
                         map_y = h_idx + flow[:,:,1]
                         warped = cv2.remap(f, map_x, map_y, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_TRANSPARENT)
-                        # Create a mask for valid (non-black) pixels
-                        mask = (cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY) > 0).astype(np.float32)
-                        # Feather the mask at the edges
-                        mask = cv2.GaussianBlur(mask, (21, 21), 0)
-                        mask3 = np.repeat(mask[:, :, np.newaxis], 3, axis=2)
-                        # Blend warped frame onto canvas using feathered mask
-                        canvas += warped.astype(np.float32) * mask3
-                        weight += mask
+                        # Blend warped frame onto canvas
+                        alpha = 0.5
+                        canvas = cv2.addWeighted(canvas, 1-alpha, warped.astype(np.float32), alpha, 0)
                         prev_gray = curr_gray
-                    # Avoid division by zero
-                    weight3 = np.repeat(np.maximum(weight, 1e-6)[:, :, np.newaxis], 3, axis=2)
-                    mosaic = (canvas / weight3)
-                    mosaic = np.clip(mosaic, 0, 255).astype(np.uint8)
+                    mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
                     mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
                     st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
     
