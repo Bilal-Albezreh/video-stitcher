@@ -90,7 +90,30 @@ if uploaded_file:
                     pano_rgb = cv2.cvtColor(pano, cv2.COLOR_BGR2RGB)
                     st.image(pano_rgb, caption=f"Stitched Panorama {idx+1}")
                 else:
-                    st.error(f"Error during stitching segment {idx+1}: {status}")
+                    st.warning(f"Stitching failed for segment {idx+1}, attempting optical flow mosaic...")
+                    # Optical flow mosaic fallback
+                    base = segment[0].copy()
+                    h, w = base.shape[:2]
+                    canvas = np.zeros_like(base, dtype=np.float32)
+                    mask = np.zeros((h, w), dtype=np.float32)
+                    canvas[:,:,:] = base[:,:,:]
+                    mask[:,:] = 1.0
+                    prev_gray = cv2.cvtColor(base, cv2.COLOR_BGR2GRAY)
+                    for f in segment[1:]:
+                        curr_gray = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
+                        flow = cv2.calcOpticalFlowFarneback(prev_gray, curr_gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+                        # Warp current frame to base using flow
+                        h_idx, w_idx = np.mgrid[0:h, 0:w].astype(np.float32)
+                        map_x = w_idx + flow[:,:,0]
+                        map_y = h_idx + flow[:,:,1]
+                        warped = cv2.remap(f, map_x, map_y, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_TRANSPARENT)
+                        # Blend warped frame onto canvas
+                        alpha = 0.5
+                        canvas = cv2.addWeighted(canvas, 1-alpha, warped.astype(np.float32), alpha, 0)
+                        prev_gray = curr_gray
+                    mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
+                    mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
+                    st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
     
     # Clean up temp file
     os.remove(tfile.name) 
