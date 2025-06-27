@@ -99,7 +99,6 @@ if uploaded_file:
                     canvas[:,:,:] = base[:,:,:]
                     mask[:,:] = 1.0
                     prev_gray = cv2.cvtColor(base, cv2.COLOR_BGR2GRAY)
-                    mosaic_success = False
                     for f in segment[1:]:
                         curr_gray = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
                         flow = cv2.calcOpticalFlowFarneback(prev_gray, curr_gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
@@ -117,26 +116,9 @@ if uploaded_file:
                         alpha = 0.5
                         canvas = cv2.addWeighted(canvas, 1-alpha, warped.astype(np.float32), alpha, 0)
                         prev_gray = curr_gray
-                        mosaic_success = True
-                    if mosaic_success:
-                        mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
-                        mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
-                        st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
-                    else:
-                        st.warning(f"Optical flow mosaic also failed for segment {idx+1}, attempting pushbroom/strip panorama...")
-                        # Pushbroom/strip panorama fallback
-                        strip_height = 10  # Number of rows to extract from each frame
-                        strips = []
-                        for frame in segment:
-                            center = h // 2
-                            strip = frame[center - strip_height//2:center + strip_height//2, :, :]
-                            strips.append(strip)
-                        if strips:
-                            panorama = np.vstack(strips)
-                            panorama_rgb = cv2.cvtColor(panorama, cv2.COLOR_BGR2RGB)
-                            st.image(panorama_rgb, caption=f"Pushbroom Strip Panorama {idx+1}")
-                        else:
-                            st.error(f"All stitching methods failed for segment {idx+1}.")
+                    mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
+                    mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
+                    st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
     
     # Clean up temp file
     os.remove(tfile.name) 
