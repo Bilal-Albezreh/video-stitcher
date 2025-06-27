@@ -22,19 +22,24 @@ if uploaded_file:
     
     frames = []
     frame_count = 0
+    SHARPNESS_THRESHOLD = 100.0  # Tune as needed
     
     while True:
         ret, frame = cap.read()
         if not ret:
             break
         if frame_count % FRAME_INTERVAL == 0:
-            frames.append(frame)
+            # Compute sharpness
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            sharpness = cv2.Laplacian(gray, cv2.CV_64F).var()
+            if sharpness >= SHARPNESS_THRESHOLD:
+                frames.append(frame)
         frame_count += 1
     
     cap.release()
     
     if len(frames) < 2:
-        st.warning("Not enough frames extracted to stitch. Please upload a longer video.")
+        st.warning("Not enough sharp frames extracted to stitch. Please upload a longer or higher quality video.")
     else:
         # --- Segment frames based on homography ---
         segments = []
