@@ -92,6 +92,7 @@ if uploaded_file:
                 else:
                     st.warning(f"Stitching failed for segment {idx+1}, attempting optical flow mosaic...")
                     # Optical flow mosaic fallback
+                    FLOW_MAG_THRESHOLD = 8.0  # Tune this value as needed
                     base = segment[0].copy()
                     h, w = base.shape[:2]
                     canvas = np.zeros_like(base, dtype=np.float32)
@@ -102,6 +103,11 @@ if uploaded_file:
                     for f in segment[1:]:
                         curr_gray = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
                         flow = cv2.calcOpticalFlowFarneback(prev_gray, curr_gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+                        mag, ang = cv2.cartToPolar(flow[...,0], flow[...,1])
+                        avg_mag = np.mean(mag)
+                        if avg_mag > FLOW_MAG_THRESHOLD:
+                            prev_gray = curr_gray
+                            continue  # Skip this frame
                         # Warp current frame to base using flow
                         h_idx, w_idx = np.mgrid[0:h, 0:w].astype(np.float32)
                         map_x = w_idx + flow[:,:,0]
