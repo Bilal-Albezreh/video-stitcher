@@ -33,6 +33,7 @@ def render_header_and_css(bg_file, logo_file):
             margin-bottom: 2.5rem;
             flex-wrap: wrap;
             backdrop-filter: blur(8px);
+            flex-direction: row;
         }}
         .app-logo {{
             width: 60px; height: 60px;
@@ -55,6 +56,15 @@ def render_header_and_css(bg_file, logo_file):
             box-shadow: 0 2px 12px rgba(24,90,157,0.10);
             display: inline-block;
         }}
+        .main-title-white {
+            color: #fff !important;
+            font-size: 2.2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 2.2rem;
+            margin-top: 0.5rem;
+            text-shadow: 0 2px 12px rgba(24,90,157,0.18);
+        }
         .premium-badge, .tech-stack-line-box {{
             animation: gradientMove 3s linear infinite;
             background-size: 200% 200%;
@@ -146,6 +156,7 @@ def render_header_and_css(bg_file, logo_file):
         """,
         unsafe_allow_html=True
     )
+    st.markdown("<h1 class='main-title-white'>Video Stitcher</h1>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-family:Montserrat, sans-serif; color:#fff; margin-bottom:1.5rem;'>Create a panorama from your video</h3>", unsafe_allow_html=True)
 
 def render_footer():
