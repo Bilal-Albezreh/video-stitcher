@@ -46,9 +46,14 @@ def render_header_and_css(bg_file, logo_file):
             font-family: 'Montserrat', sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
-            color: #185a9d;
+            color: #fff;
             letter-spacing: 1.5px;
             margin-bottom: 0.2rem;
+            background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+            padding: 0.5rem 1.5rem;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 12px rgba(24,90,157,0.10);
+            display: inline-block;
         }}
         .premium-badge, .tech-stack-line-box {{
             animation: gradientMove 3s linear infinite;
@@ -133,7 +138,7 @@ def render_header_and_css(bg_file, logo_file):
         <div class="app-header">
             <div class="app-logo"></div>
             <div>
-                <div class="app-title">Lumera</div>
+                <div class="app-title">FrameDetect</div>
                 <div class="tech-stack-line-box">🛠️ The full version is powered by OpenCV, COLMAP, PyTorch (RAFT), and Azure Cloud for professional-grade video stitching and 3D reconstruction.</div>
             </div>
             <div class="premium-badge">⚡ Unlock Pro: Up to 20x Faster Processing & Advanced AI Features</div>
