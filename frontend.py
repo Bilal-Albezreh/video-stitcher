@@ -28,12 +28,13 @@ def render_header_and_css(bg_file, logo_file):
             border-radius: 0 0 2rem 2rem;
             box-shadow: 0 6px 32px rgba(0,0,0,0.09);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            justify-content: center;
+            gap: 1.2rem;
             margin-bottom: 2.5rem;
             flex-wrap: wrap;
             backdrop-filter: blur(8px);
-            flex-direction: row;
         }}
         .app-logo {{
             width: 60px; height: 60px;
@@ -43,12 +44,14 @@ def render_header_and_css(bg_file, logo_file):
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 2px 12px rgba(67,206,162,0.12);
             flex-shrink: 0;
+            margin-bottom: 0.5rem;
         }}
         .header-title-group {{
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 0.5rem;
+            align-items: center;
         }}
         .app-title {{
             font-family: 'Montserrat', sans-serif;
