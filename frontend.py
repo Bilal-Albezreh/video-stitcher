@@ -76,7 +76,7 @@ def render_header_and_css(bg_file, logo_file):
             font-family: 'Roboto', sans-serif;
         }}
         /* File uploader dropbox styling */
-        div[data-testid="stFileDropzone"] {{
+        div[data-testid="stFileDropzone"] {
             min-width: 400px;
             max-width: 600px;
             min-height: 200px;
@@ -92,7 +92,10 @@ def render_header_and_css(bg_file, logo_file):
             justify-content: center;
             align-items: center;
             transition: box-shadow 0.2s;
-        }}
+        }
+        div[data-testid="stFileDropzone"] * {
+            background: transparent !important;
+        }
         div[data-testid="stFileDropzone"]:hover {{
             box-shadow: 0 8px 32px rgba(24,90,157,0.16);
             border-color: #43cea2;
