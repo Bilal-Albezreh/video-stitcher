@@ -6,13 +6,13 @@ import os
 
 st.title("Video Stitcher Demo")
 
-uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov"])
+# --- User Controls (Sidebar) ---
+st.sidebar.header("Extraction & Stitching Controls")
+FRAME_INTERVAL = st.sidebar.slider("Frame Interval (frames)", min_value=5, max_value=120, value=30, step=5, help="How often to extract a frame from the video.")
+SHARPNESS_THRESHOLD = st.sidebar.slider("Sharpness Threshold", min_value=10, max_value=500, value=100, step=10, help="Minimum sharpness for a frame to be used.")
+SEGMENT_HIST_DIFF = st.sidebar.slider("Scene Change Sensitivity", min_value=0.01, max_value=0.5, value=0.15, step=0.01, help="How sensitive segmentation is to scene changes.")
 
-# --- User Controls ---
-st.sidebar.header("Extraction Settings")
-FRAME_INTERVAL = st.sidebar.slider("Frame Interval", min_value=5, max_value=120, value=30, step=5)
-SHARPNESS_THRESHOLD = st.sidebar.slider("Sharpness Threshold", min_value=10, max_value=500, value=100, step=10)
-SEGMENT_HIST_DIFF = st.sidebar.slider("Scene Change Sensitivity", min_value=0.01, max_value=0.5, value=0.15, step=0.01)
+uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov"])
 
 if uploaded_file:
     # Save uploaded video to a temp file
@@ -74,6 +74,7 @@ if uploaded_file:
             st.success(f"Found {len(segments)} scene segment(s). Attempting stitching...")
             for idx, segment in enumerate(segments):
                 st.write(f"### Panorama for Segment {idx+1}")
+                st.write(f"Frames in this segment: {len(segment)}")
                 if len(segment) < 2:
                     st.warning("Not enough frames in this segment to stitch.")
                     continue
@@ -84,8 +85,14 @@ if uploaded_file:
                     pano_rgb = cv2.cvtColor(pano, cv2.COLOR_BGR2RGB)
                     st.image(pano_rgb, caption=f"Stitched Panorama {idx+1}")
                     continue
+                else:
+                    if status == 3:
+                        st.warning(f"OpenCV stitcher failed for segment {idx+1}: Not enough good images to stitch. "
+                                   "Try lowering the sharpness threshold or frame interval, or use a video with more overlap.")
+                    else:
+                        st.warning(f"OpenCV stitcher failed for segment {idx+1}, error code: {status}")
                 # --- Fallback: Pairwise Warping/Blending ---
-                st.warning(f"OpenCV stitcher failed for segment {idx+1}, trying pairwise blending...")
+                st.warning(f"Trying pairwise blending for segment {idx+1}...")
                 try:
                     base = segment[0].copy()
                     for f in segment[1:]:
