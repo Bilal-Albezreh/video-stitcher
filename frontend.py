@@ -35,12 +35,6 @@ def render_header_and_css(bg_file, logo_file):
             backdrop-filter: blur(8px);
             flex-direction: row;
         }}
-        .header-title-group {{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 0.5rem;
-        }}
         .app-logo {{
             width: 60px; height: 60px;
             background: url('data:image/png;base64,{logo_base64}') no-repeat center center;
@@ -48,6 +42,13 @@ def render_header_and_css(bg_file, logo_file):
             border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 2px 12px rgba(67,206,162,0.12);
+            flex-shrink: 0;
+        }}
+        .header-title-group {{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
         }}
         .app-title {{
             font-family: 'Montserrat', sans-serif;
@@ -55,12 +56,14 @@ def render_header_and_css(bg_file, logo_file):
             font-weight: 700;
             color: #fff;
             letter-spacing: 1.5px;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0;
+            margin-top: 0;
             background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
-            padding: 0.5rem 1.5rem;
+            padding: 0.3rem 1.5rem;
             border-radius: 1.2rem;
             box-shadow: 0 2px 12px rgba(24,90,157,0.10);
             display: inline-block;
+            max-width: 600px;
         }}
         .main-title-white {{
             color: #fff !important;
