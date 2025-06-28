@@ -23,7 +23,7 @@ def render_header_and_css(bg_file, logo_file):
             font-family: 'Roboto', sans-serif;
         }}
         .app-header {{
-            background: rgba(255,255,255,0.92);
+            background: rgba(255,255,255,0.85);
             padding: 2rem 2.5rem 1.5rem 2.5rem;
             border-radius: 0 0 2rem 2rem;
             box-shadow: 0 6px 32px rgba(0,0,0,0.09);
@@ -32,6 +32,7 @@ def render_header_and_css(bg_file, logo_file):
             gap: 1.5rem;
             margin-bottom: 2.5rem;
             flex-wrap: wrap;
+            backdrop-filter: blur(8px);
         }}
         .app-logo {{
             width: 60px; height: 60px;
@@ -60,7 +61,13 @@ def render_header_and_css(bg_file, logo_file):
             box-shadow: 0 2px 10px rgba(24,90,157,0.10);
             display: flex; align-items: center;
             gap: 0.7rem;
+            animation: gradientMove 3s linear infinite;
+            background-size: 200% 200%;
         }}
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
         .tech-stack-line-box {{
             background: linear-gradient(90deg, #e0eafc 0%, #185a9d 100%);
             color: #fff;
@@ -74,6 +81,18 @@ def render_header_and_css(bg_file, logo_file):
             display: flex; align-items: center;
             gap: 0.7rem;
             letter-spacing: 0.2px;
+            animation: gradientMove 3s linear infinite;
+            background-size: 200% 200%;
+        }}
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .tech-stack-line-box:hover {{
+            transform: scale(1.04);
+            box-shadow: 0 4px 24px #43cea2cc;
+            transition: all 0.2s;
+            cursor: pointer;
         }}
         .footer {{
             margin-top: 3.5rem;
@@ -93,7 +112,13 @@ def render_header_and_css(bg_file, logo_file):
             box-shadow: 0 2px 14px rgba(24,90,157,0.08);
             background: rgba(255,255,255,0.97);
             border: 1.5px solid #e0eafc;
+            animation: pulseBorder 2s infinite;
         }}
+        @keyframes pulseBorder {
+            0% { border-color: #e0eafc; }
+            50% { border-color: #43cea2; }
+            100% { border-color: #e0eafc; }
+        }
         section[data-testid="stFileUploader"] label {{
             font-size: 1.15rem;
             color: #185a9d;
