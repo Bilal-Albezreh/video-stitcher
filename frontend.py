@@ -35,6 +35,12 @@ def render_header_and_css(bg_file, logo_file):
             backdrop-filter: blur(8px);
             flex-direction: row;
         }}
+        .header-title-group {{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
+        }}
         .app-logo {{
             width: 60px; height: 60px;
             background: url('data:image/png;base64,{logo_base64}') no-repeat center center;
@@ -147,11 +153,11 @@ def render_header_and_css(bg_file, logo_file):
         </style>
         <div class="app-header">
             <div class="app-logo"></div>
-            <div>
+            <div class="header-title-group">
                 <div class="app-title">FrameDetect</div>
                 <div class="tech-stack-line-box">🛠️ The full version is powered by OpenCV, COLMAP, PyTorch (RAFT), and Azure Cloud for professional-grade video stitching and 3D reconstruction.</div>
+                <div class="premium-badge">⚡ Unlock Pro: Up to 20x Faster Processing & Advanced AI Features</div>
             </div>
-            <div class="premium-badge">⚡ Unlock Pro: Up to 20x Faster Processing & Advanced AI Features</div>
         </div>
         """,
         unsafe_allow_html=True
