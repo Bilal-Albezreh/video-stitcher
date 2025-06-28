@@ -111,7 +111,7 @@ def render_header_and_css(bg_file, logo_file):
             <div class="app-logo"></div>
             <div>
                 <div class="app-title">Lumera</div>
-                <div class="tech-stack-line">Powered by OpenCV, COLMAP, PyTorch (RAFT), and Azure Cloud for professional-grade video stitching and 3D reconstruction.</div>
+                <div class="tech-stack-line">The full version is powered by OpenCV, COLMAP, PyTorch (RAFT), and Azure Cloud for professional-grade video stitching and 3D reconstruction.</div>
             </div>
             <div class="premium-badge">⚡ Unlock Pro: Up to 20x Faster Processing & Advanced AI Features</div>
         </div>
