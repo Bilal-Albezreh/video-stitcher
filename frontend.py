@@ -61,11 +61,18 @@ def render_header_and_css(bg_file, logo_file):
             display: flex; align-items: center;
             gap: 0.7rem;
         }}
-        .tech-stack-line {{
-            margin-top: 0.7rem;
-            color: #185a9d;
+        .tech-stack-line-box {{
+            background: linear-gradient(90deg, #e0eafc 0%, #185a9d 100%);
+            color: #fff;
             font-weight: 600;
+            border-radius: 10px;
+            padding: 0.4rem 1.1rem;
+            margin-top: 0.7rem;
+            margin-left: 0;
             font-size: 1.08rem;
+            box-shadow: 0 2px 10px rgba(24,90,157,0.10);
+            display: flex; align-items: center;
+            gap: 0.7rem;
             letter-spacing: 0.2px;
         }}
         .footer {{
@@ -111,7 +118,7 @@ def render_header_and_css(bg_file, logo_file):
             <div class="app-logo"></div>
             <div>
                 <div class="app-title">Lumera</div>
-                <div class="tech-stack-line">The full version is powered by OpenCV, COLMAP, PyTorch (RAFT), and Azure Cloud for professional-grade video stitching and 3D reconstruction.</div>
+                <div class="tech-stack-line-box">🛠️ The full version is powered by OpenCV, COLMAP, PyTorch (RAFT), and Azure Cloud for professional-grade video stitching and 3D reconstruction.</div>
             </div>
             <div class="premium-badge">⚡ Unlock Pro: Up to 20x Faster Processing & Advanced AI Features</div>
         </div>
