@@ -125,7 +125,7 @@ def render_header_and_css(bg_file, logo_file):
         """,
         unsafe_allow_html=True
     )
-    st.markdown("<h3 style='font-family:Montserrat, sans-serif; color:#185a9d; margin-bottom:1.5rem;'>Create a panorama from your video</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='font-family:Montserrat, sans-serif; color:#fff; margin-bottom:1.5rem;'>Create a panorama from your video</h3>", unsafe_allow_html=True)
 
 def render_footer():
     st.markdown(
