@@ -129,6 +129,6 @@ def render_header_and_css(bg_file, logo_file):
 
 def render_footer():
     st.markdown(
-        "<div class='footer'>This application is for demonstration purposes only.<br>Powered by Bilal Albezreh & Yaman Albezreh &middot; 2024</div>",
+        "<div class='footer'>This application is for demonstration purposes only.<br>Powered by Bilal Albezreh & Yaman Albezreh &middot; 2025</div>",
         unsafe_allow_html=True
     )
