@@ -1,5 +1,5 @@
 opencv-python 
 streamlit
-opencv-python-headless
 numpy
-cv2
+opencv-python
+opencv-python-headless
