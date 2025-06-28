@@ -25,6 +25,8 @@ if uploaded_file:
     
     frames = []
     frame_count = 0
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    progress = st.progress(0)
     
     while True:
         ret, frame = cap.read()
@@ -33,8 +35,11 @@ if uploaded_file:
         if frame_count % FRAME_INTERVAL == 0:
             frames.append(frame)
         frame_count += 1
+        if total_frames > 0:
+            progress.progress(min(frame_count / total_frames, 1.0))
     
     cap.release()
+    progress.empty()
     
     if len(frames) < 2:
         st.warning("Not enough frames extracted to stitch. Please upload a longer video.")
