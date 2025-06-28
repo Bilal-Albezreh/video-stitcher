@@ -113,6 +113,11 @@ def render_header_and_css(bg_file, logo_file):
                 padding: 0.3rem 0.7rem;
             }}
         }}
+        span[data-testid="stFileUploaderFilename"] {
+            color: #fff !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
         </style>
         <div class="app-header">
             <div class="app-logo"></div>
