@@ -27,7 +27,9 @@ if uploaded_file:
     frame_count = 0
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     progress = st.progress(0)
+    status_text = st.empty()
     
+    status_text.info("Extracting frames...")
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -36,15 +38,16 @@ if uploaded_file:
             frames.append(frame)
         frame_count += 1
         if total_frames > 0:
-            progress.progress(min(frame_count / total_frames, 1.0))
+            progress.progress(min(frame_count / total_frames, 0.33))
     
     cap.release()
-    progress.empty()
     
     if len(frames) < 2:
-        st.warning("Not enough frames extracted to stitch. Please upload a longer video.")
+        status_text.warning("Not enough frames extracted to stitch. Please upload a longer video.")
+        progress.empty()
     else:
         # --- Segment frames based on homography ---
+        status_text.info("Segmenting frames into scenes...")
         segments = []
         current_segment = [frames[0]]
         prev_gray = cv2.cvtColor(frames[0], cv2.COLOR_BGR2GRAY)
@@ -85,9 +88,13 @@ if uploaded_file:
             segments.append(current_segment)
         
         if not segments:
-            st.warning("No valid segments found for stitching.")
+            status_text.warning("No valid segments found for stitching.")
+            progress.empty()
         else:
+            status_text.success(f"Found {len(segments)} scene segment(s). Stitching panoramas...")
             for idx, segment in enumerate(segments):
+                status_text.info(f"Stitching panorama {idx+1} of {len(segments)}...")
+                progress.progress(0.33 + 0.67 * (idx / len(segments)))
                 st.write(f"### Panorama for Segment {idx+1}")
                 if len(segment) < 2:
                     st.warning("Not enough frames in this segment to stitch.")
@@ -98,7 +105,7 @@ if uploaded_file:
                     pano_rgb = cv2.cvtColor(pano, cv2.COLOR_BGR2RGB)
                     st.image(pano_rgb, caption=f"Stitched Panorama {idx+1}")
                 else:
-                    st.warning(f"Stitching failed for segment {idx+1}, attempting optical flow mosaic...")
+                    status_text.warning(f"Stitching failed for segment {idx+1}, attempting optical flow mosaic...")
                     FLOW_MAG_THRESHOLD = 8.0  # Tune this value as needed
                     base = segment[0].copy()
                     h, w = base.shape[:2]
@@ -127,6 +134,9 @@ if uploaded_file:
                     mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
                     mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
                     st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
+            status_text.success("All panoramas complete!")
+            progress.progress(1.0)
+            progress.empty()
 
 # Clean up temp file
     os.remove(tfile.name)
