@@ -12,16 +12,13 @@ def render_header_and_css(bg_file, logo_file):
         f"""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap');
-        html, body {{
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] {{
+            background: url('data:image/png;base64,{bg_base64}') no-repeat center center fixed !important;
+            background-size: cover !important;
+            background-color: #e0eafc !important;
+            color: #185a9d !important;
         }}
         body {{
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%), url('data:image/png;base64,{bg_base64}');
-            background-size: cover, cover;
-            background-repeat: no-repeat, no-repeat;
-            background-attachment: fixed;
             min-height: 100vh;
             font-family: 'Roboto', sans-serif;
         }}
@@ -125,6 +122,6 @@ def render_header_and_css(bg_file, logo_file):
 
 def render_footer():
     st.markdown(
-        "<div class='footer'>This application is for demonstration purposes only.<br>Powered by Bilal &middot; 2024</div>",
+        "<div class='footer'>This application is for demonstration purposes only.<br>Powered by Bilal Albezreh & Yaman Albezreh &middot; 2024</div>",
         unsafe_allow_html=True
     ) 
