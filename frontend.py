@@ -50,24 +50,20 @@ def render_header_and_css(bg_file, logo_file):
             letter-spacing: 1.5px;
             margin-bottom: 0.2rem;
         }}
-        .premium-badge {{
-            background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
-            color: #fff;
-            font-weight: 600;
-            border-radius: 10px;
-            padding: 0.4rem 1.1rem;
-            margin-left: 1.2rem;
-            font-size: 1.08rem;
-            box-shadow: 0 2px 10px rgba(24,90,157,0.10);
-            display: flex; align-items: center;
-            gap: 0.7rem;
+        .premium-badge, .tech-stack-line-box {{
             animation: gradientMove 3s linear infinite;
             background-size: 200% 200%;
         }}
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
+        @keyframes gradientMove {{
+            0% {{ background-position: 0% 50%; }}
+            100% {{ background-position: 100% 50%; }}
+        }}
+        .premium-badge:hover, .tech-stack-line-box:hover {{
+            transform: scale(1.04);
+            box-shadow: 0 4px 24px #43cea2cc;
+            transition: all 0.2s;
+            cursor: pointer;
+        }}
         .tech-stack-line-box {{
             background: linear-gradient(90deg, #e0eafc 0%, #185a9d 100%);
             color: #fff;
@@ -81,18 +77,6 @@ def render_header_and_css(bg_file, logo_file):
             display: flex; align-items: center;
             gap: 0.7rem;
             letter-spacing: 0.2px;
-            animation: gradientMove 3s linear infinite;
-            background-size: 200% 200%;
-        }}
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-        .tech-stack-line-box:hover {{
-            transform: scale(1.04);
-            box-shadow: 0 4px 24px #43cea2cc;
-            transition: all 0.2s;
-            cursor: pointer;
         }}
         .footer {{
             margin-top: 3.5rem;
@@ -114,11 +98,11 @@ def render_header_and_css(bg_file, logo_file):
             border: 1.5px solid #e0eafc;
             animation: pulseBorder 2s infinite;
         }}
-        @keyframes pulseBorder {
-            0% { border-color: #e0eafc; }
-            50% { border-color: #43cea2; }
-            100% { border-color: #e0eafc; }
-        }
+        @keyframes pulseBorder {{
+            0% {{ border-color: #e0eafc; }}
+            50% {{ border-color: #43cea2; }}
+            100% {{ border-color: #e0eafc; }}
+        }}
         section[data-testid="stFileUploader"] label {{
             font-size: 1.15rem;
             color: #185a9d;
