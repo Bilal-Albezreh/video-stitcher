@@ -99,10 +99,10 @@ def render_header_and_css(bg_file, logo_file):
             color: #185a9d;
             font-weight: 500;
         }}
-        span[data-testid="stFileUploaderFilename"] {{
+        section[data-testid="stFileUploader"] span[data-testid="stFileUploaderFilename"] {{
             color: #fff !important;
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
         }}
         @media (max-width: 700px) {{
             .app-header {{
