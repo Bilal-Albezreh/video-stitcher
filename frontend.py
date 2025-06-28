@@ -101,11 +101,11 @@ def render_header_and_css(bg_file, logo_file):
         }}
         section[data-testid="stFileUploader"] a[data-testid="stFileUploaderFilename"],
         section[data-testid="stFileUploader"] span[data-testid="stFileUploaderFilename"],
-        section[data-testid="stFileUploader"] div[data-testid="stFileUploaderFilename"] {
+        section[data-testid="stFileUploader"] div[data-testid="stFileUploaderFilename"] {{
             color: #fff !important;
             font-weight: 600 !important;
             font-size: 1.1rem !important;
-        }
+        }}
         @media (max-width: 700px) {{
             .app-header {{
                 flex-direction: column;
