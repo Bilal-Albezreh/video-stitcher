@@ -76,21 +76,31 @@ def render_header_and_css(bg_file, logo_file):
             font-family: 'Roboto', sans-serif;
         }}
         section[data-testid="stFileUploader"] > div {{
-            min-width: 350px;
-            max-width: 520px;
-            min-height: 170px;
-            padding: 2.2rem 1.2rem;
-            font-size: 1.18rem;
-            border-radius: 1.1rem;
-            margin: 0 auto 2.2rem auto;
-            box-shadow: 0 2px 14px rgba(24,90,157,0.08);
-            background: rgba(255,255,255,0.97);
-            border: 1.5px solid #e0eafc;
+            min-width: 400px;
+            max-width: 600px;
+            min-height: 200px;
+            padding: 3rem 2rem;
+            font-size: 1.25rem;
+            border-radius: 1.5rem;
+            margin: 0 auto 2.5rem auto;
+            box-shadow: 0 4px 24px rgba(24,90,157,0.10);
+            background: #fff !important;
+            border: 2.5px solid #e0eafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }}
+        section[data-testid="stFileUploader"] > div:hover {{
+            box-shadow: 0 8px 32px rgba(24,90,157,0.16);
+            border-color: #43cea2;
         }}
         section[data-testid="stFileUploader"] label {{
-            font-size: 1.15rem;
+            font-size: 1.35rem;
             color: #185a9d;
-            font-weight: 500;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }}
         @media (max-width: 700px) {{
             .app-header {{
