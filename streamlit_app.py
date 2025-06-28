@@ -3,6 +3,9 @@ import cv2
 import numpy as np
 import tempfile
 import os
+import frontend
+
+frontend.render_header_and_css('ground.png', 'logo.png')
 
 st.title("Video Stitcher")
 
@@ -119,6 +122,8 @@ if uploaded_file:
                     mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
                     mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
                     st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
-    
-    # Clean up temp file
-    os.remove(tfile.name) 
+
+# Clean up temp file
+    os.remove(tfile.name)
+
+frontend.render_footer() 
