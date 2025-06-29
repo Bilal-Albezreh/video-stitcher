@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import tempfile
 import os
+import io
+from PIL import Image
 import frontend
 
 frontend.render_header_and_css('ground.png', 'logo.png')
@@ -104,6 +106,19 @@ if uploaded_file:
                 if status == cv2.Stitcher_OK:
                     pano_rgb = cv2.cvtColor(pano, cv2.COLOR_BGR2RGB)
                     st.image(pano_rgb, caption=f"Stitched Panorama {idx+1}")
+                    
+                    # Add download button for successful panorama
+                    pil_image = Image.fromarray(pano_rgb)
+                    img_buffer = io.BytesIO()
+                    pil_image.save(img_buffer, format='PNG')
+                    img_buffer.seek(0)
+                    st.download_button(
+                        label=f"📥 Download Panorama {idx+1}",
+                        data=img_buffer.getvalue(),
+                        file_name=f"panorama_{idx+1}.png",
+                        mime="image/png",
+                        key=f"download_pano_{idx}"
+                    )
                 else:
                     status_text.warning(f"Stitching failed for segment {idx+1}, attempting optical flow mosaic...")
                     FLOW_MAG_THRESHOLD = 8.0  # Tune this value as needed
@@ -134,6 +149,19 @@ if uploaded_file:
                     mosaic = np.clip(canvas, 0, 255).astype(np.uint8)
                     mosaic_rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB)
                     st.image(mosaic_rgb, caption=f"Optical Flow Mosaic {idx+1}")
+                    
+                    # Add download button for optical flow mosaic
+                    pil_image = Image.fromarray(mosaic_rgb)
+                    img_buffer = io.BytesIO()
+                    pil_image.save(img_buffer, format='PNG')
+                    img_buffer.seek(0)
+                    st.download_button(
+                        label=f"📥 Download Mosaic {idx+1}",
+                        data=img_buffer.getvalue(),
+                        file_name=f"mosaic_{idx+1}.png",
+                        mime="image/png",
+                        key=f"download_mosaic_{idx}"
+                    )
             status_text.success("All panoramas complete!")
             progress.progress(1.0)
             progress.empty()
